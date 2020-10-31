@@ -37,6 +37,7 @@ call plug#begin('~/.vim/plugged')
   :nmap <Leader>b :Buffers<CR>
   :nmap <Leader>g :GFiles<CR>
   :nmap <Leader>c :Commits<CR>
+  :nmap <Leader>gm <Plug>(git-messenger)
   
 """""""""""""""""""""""""""""""""""""""""""""
 " Sangria para diferentes tipos de archivos "
@@ -45,6 +46,28 @@ call plug#begin('~/.vim/plugged')
   autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
   autocmd Filetype vue setlocal ts=2 sw=2 expandtab
   autocmd Filetype json setlocal ts=2 sw=2 expandtab
+  
+""""""""""""""""""""""""""
+" Mensajes de Git Coments"
+""""""""""""""""""""""""""
+  Plug 'rhysd/git-messenger.vim'
+
+  " Normal color in popup window with 'CursorLine'
+  hi link gitmessengerPopupNormal CursorLine
+  " Header such as 'Commit:', 'Author:' with 'Statement' highlight group
+  hi link gitmessengerHeader Statement
+  " Commit hash at 'Commit:' header with 'Special' highlight group
+  hi link gitmessengerHash Special
+  " History number at 'History:' header with 'Title' highlight group
+  hi link gitmessengerHistory Title
+
+  function! s:setup_git_messenger_popup() abort
+      " For example, set go back/forward history to <C-o>/<C-i>
+    nmap <buffer><C-o> o
+    nmap <buffer><C-i> O
+  endfunction
+
+  autocmd FileType gitmessengerpopup call <SID>setup_git_messenger_popup()
 
 """""""""""""""""""""""""
 " Autocompletado Global "
@@ -103,7 +126,7 @@ call plug#begin('~/.vim/plugged')
 " Use K to show documentation in preview window
   nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-  function! s:show_documentation()
+  function! s:showdocumentation()
     if (index(['vim','help'], &filetype) >= 0)
       execute 'h '.expand('<cword>')
     else
@@ -113,9 +136,6 @@ call plug#begin('~/.vim/plugged')
 
 " Highlight symbol under cursor on CursorHold
   autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Remap for rename current word
-  nmap <F2> <Plug>(coc-rename)
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
