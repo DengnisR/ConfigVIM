@@ -13,21 +13,23 @@ call plug#begin('~/.vim/plugged')
   set ruler
   set sw=2
   set clipboard+=unnamedplus
+  set clipboard=unnamed
+  set clipboard+=unnamed
+  set clipboard=unnamedplus
   set encoding=UTF-8
   set relativenumber
   set termguicolors
   set laststatus=2
   set nocompatible
-  set termguicolors
   set showmatch
   set nowrap
   set noshowmode
 
-  :let mapleader=" "
-
 """""""""""""""""""""""""""""""""""
 " Atajos de teclas personalizadas "
 """""""""""""""""""""""""""""""""""
+  :let mapleader=" "
+
   :nmap <Leader>s <Plug>(easymotion-s2)
   :nmap <Leader>h :bprevious<CR> 
   :nmap <Leader>l :bnext<CR> 
@@ -46,28 +48,45 @@ call plug#begin('~/.vim/plugged')
   autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
   autocmd Filetype vue setlocal ts=2 sw=2 expandtab
   autocmd Filetype json setlocal ts=2 sw=2 expandtab
-  
+ 
 """"""""""""""""""""""""""
-" Mensajes de Git Coments"
+" Para el inicio del VIM "
 """"""""""""""""""""""""""
-  Plug 'rhysd/git-messenger.vim'
+  Plug 'mhinz/vim-startify'
 
-  " Normal color in popup window with 'CursorLine'
-  hi link gitmessengerPopupNormal CursorLine
-  " Header such as 'Commit:', 'Author:' with 'Statement' highlight group
-  hi link gitmessengerHeader Statement
-  " Commit hash at 'Commit:' header with 'Special' highlight group
-  hi link gitmessengerHash Special
-  " History number at 'History:' header with 'Title' highlight group
-  hi link gitmessengerHistory Title
+  let g:startify_session_autoload = 1
 
-  function! s:setup_git_messenger_popup() abort
-      " For example, set go back/forward history to <C-o>/<C-i>
-    nmap <buffer><C-o> o
-    nmap <buffer><C-i> O
-  endfunction
+  let g:startify_lists = [
+          \ { 'type': 'dir',       'header': ['   Directorio actual'. getcwd()] },
+          \ { 'type': 'bookmarks', 'header': ['   Marcadores']      },
+          \ ]
 
-  autocmd FileType gitmessengerpopup call <SID>setup_git_messenger_popup()
+  let g:startify_bookmarks = [
+          \ { 'w': '~/Webstin/wispfree-quasar' },
+          \ { 'd': '~/Webstin/DengnisR' },
+          \ { 's': '~/Webstin/scripts-mikrotik' },
+          \ { 'm': '~/Webstin/BedrockServer' },
+          \ ]
+
+  let g:startify_custom_header = [
+         \ '    ________                                _____         ________ ',
+         \ '    ___  __ \_____ _______ _______ ________ ___(_)___________  __ \',
+         \ '    __  / / /_  _ \__  __ \__  __ `/__  __ \__  / __  ___/__  /_/ /',
+         \ '    _  /_/ / /  __/_  / / /_  /_/ / _  / / /_  /  _(__  ) _  _, _/ ',
+         \ '    /_____/  \___/ /_/ /_/ _\__, /  /_/ /_/ /_/   /____/  /_/ |_|  ',
+         \ '                            /____/                                  ',
+	 \]
+
+""""""""""""""""""""""""""""
+" Iconos para los archivos "
+""""""""""""""""""""""""""""
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'vwxyutarooo/nerdtree-devicons-syntax'
+
+  let g:WebDevIconsOS = 'Darwin'
+  let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+  let g:DevIconsEnableFoldersOpenClose = 1
+  let g:DevIconsEnableFolderExtensionPatternMatching = 1
 
 """""""""""""""""""""""""
 " Autocompletado Global "
@@ -126,7 +145,7 @@ call plug#begin('~/.vim/plugged')
 " Use K to show documentation in preview window
   nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-  function! s:showdocumentation()
+  function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
       execute 'h '.expand('<cword>')
     else
@@ -139,13 +158,6 @@ call plug#begin('~/.vim/plugged')
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-"""""""""""""""""""""""""""""""""""""""""""
-" Configuracion para el log de git en Vim "
-"""""""""""""""""""""""""""""""""""""""""""
-  let g:fzf_commits_log_options = '--graph --color=always
-  \ --format="%C(yellow)%h%C(red)%d%C(reset)
-  \ - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
 
 """"""""""""""""""""""""
 " Para buscar archivos "
@@ -181,9 +193,40 @@ call plug#begin('~/.vim/plugged')
 """""""""""""""""""
 " Git integration "
 """""""""""""""""""
+  Plug 'tpope/vim-rhubarb'
+  Plug 'junegunn/gv.vim'
   Plug 'tpope/vim-fugitive'
   Plug 'airblade/vim-gitgutter'
   Plug 'Xuyuanp/nerdtree-git-plugin'
+
+"""""""""""""""""""""""""""""""""""""""""""
+" Configuracion para el log de git en Vim "
+"""""""""""""""""""""""""""""""""""""""""""
+  let g:fzf_commits_log_options = '--graph --color=always
+  \ --format="%C(yellow)%h%C(red)%d%C(reset)
+  \ - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
+
+""""""""""""""""""""""""""
+" Mensajes de Git Coments"
+""""""""""""""""""""""""""
+  Plug 'rhysd/git-messenger.vim'
+
+  " Normal color in popup window with 'CursorLine'
+  hi link gitmessengerPopupNormal CursorLine
+  " Header such as 'Commit:', 'Author:' with 'Statement' highlight group
+  hi link gitmessengerHeader Statement
+  " Commit hash at 'Commit:' header with 'Special' highlight group
+  hi link gitmessengerHash Special
+  " History number at 'History:' header with 'Title' highlight group
+  hi link gitmessengerHistory Title
+
+  function! s:setup_git_messenger_popup() abort
+      " For example, set go back/forward history to <C-o>/<C-i>
+    nmap <buffer><C-o> o
+    nmap <buffer><C-i> O
+  endfunction
+
+  autocmd FileType gitmessengerpopup call <SID>setup_git_messenger_popup()
 
 """""""""""""
 " Autopairs "
@@ -208,21 +251,25 @@ call plug#begin('~/.vim/plugged')
 " Color de Scheme Global "
 """"""""""""""""""""""""""
   Plug 'morhetz/gruvbox'
-  colorscheme gruvbox
-  let g:gruvbox_contrast_dark = "hard"
-  let g:gruvbox_italic=1
-  set bg=dark
+  Plug 'tomasiser/vim-code-dark'
+  colorscheme codedark
+  let g:airline_theme = 'codedark'
+  "let g:gruvbox_contrast_dark = hard
+  "let g:gruvbox_italic=1
+  "set bg=dark
 
 """"""""""""""""""""""""
 " Configuring NerdTree "
 """"""""""""""""""""""""
   Plug 'scrooloose/nerdtree'
    
-  let NERDTreeIgnore = [ '__pycache__', '\.pyc$', '\.o$', '\.swp',  '*\.swp', '^node_modules$' , '\.git/' ]
+  let NERDTreeIgnore = [ '__pycache__', '\.pyc$', '\.o$', '\.swp',  '*\.swp', '^node_modules$' , '^.git$' ]
   let NERDTreeShowHidden = 1
   let NERDTreeQuitOnOpen = 1
   let NERDTreeMinimalUI = 1
   let NERDTreeDirArrows = 1
+  let g:NERDTreeDirArrowExpandable = ''
+  let g:NERDTreeDirArrowCollapsible = ''
 
 """""""""""""""
 " Vim-Airline "
