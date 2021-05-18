@@ -100,6 +100,7 @@ call plug#begin('~/.vim/plugged')
     \ 'coc-phpactor', 
     \ 'coc-html', 
     \ 'coc-css', 
+    \ 'coc-snippets'
     \ ]
 
 " from readme
@@ -158,6 +159,12 @@ call plug#begin('~/.vim/plugged')
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
   set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+"""""""""
+" React "
+"""""""""
+  Plug 'mlaursen/vim-react-snippets'
+  Plug 'mxw/vim-jsx'
 
 """"""""""""""""""""""""
 " Para buscar archivos "
